@@ -31,15 +31,22 @@ def chat(messages):
 def main():
 
     messages = []
-    add_user_message(messages, "Define Quantum Computing in one sentence.")
-    answer = chat(messages)
-    add_assistant_message(messages, answer)
+    exit_commands = ["exit", "quit", "bye"]
+    is_exit = False
+    while not is_exit:
+        user_input = input("User: ")
 
-    add_user_message(messages, "Write anouther sentence")
-    answer2 = chat(messages)
-    add_assistant_message(messages, answer2)
-
-    pprint(messages)
+        if user_input in exit_commands:
+            exit_message = "Goodbye! Have a great day!"
+            print(f"Assistant: {exit_message}")
+            is_exit = True
+            exit(0)
+        messages = add_user_message(messages, user_input)
+        assistant_response = chat(messages)
+        messages = add_assistant_message(messages, assistant_response)
+        print("---")
+        print(f"Assistant: {assistant_response}")
+        print("---")
 
 if __name__ == "__main__":
     main()
