@@ -2,28 +2,36 @@ from dotenv import load_dotenv
 
 load_dotenv()  # Load environment variables from .env file
 
-from anthropic import Anthropic
 from pprint import pprint
+
+from anthropic import Anthropic
+
+client = Anthropic()
+model = "claude-sonnet-5"
 
 
 def main():
-    client = Anthropic()
-    model="claude-sonnet-5"
+
     respose = client.messages.create(
         model=model,
-        max_tokens=300,
+        max_tokens=100,
         messages=[
             {
                 "role": "user",
-                "content": "Write is quantum computing ? Answer in one line"
+                "content": "Write is quantum computing ? Answer in one line",
             }
-        ]
+        ],
     )
 
-    #pprint(respose)
-    pprint(respose.content[0].text)   
+    pprint(respose.content[0].text)
 
+    respose2 = client.messages.create(
+        model=model,
+        max_tokens=100,
+        messages=[{"role": "user", "content": "Write one more line"}],
+    )
 
+    pprint(respose2)
 
 
 if __name__ == "__main__":
