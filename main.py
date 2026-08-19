@@ -7,7 +7,7 @@ from pprint import pprint
 from anthropic import Anthropic
 
 client = Anthropic()
-model = "claude-sonnet-5"
+model = "claude-haiku-4-5"
 
 
 def main():
@@ -31,7 +31,7 @@ def main():
         messages=[{"role": "user", "content": "Write one more line"}],
     )
 
-    pprint(respose2)
+    pprint(respose2.content[0].text)
 
 
 if __name__ == "__main__":
