@@ -8,6 +8,12 @@ from anthropic import Anthropic
 
 client = Anthropic()
 model = "claude-haiku-4-5"
+system_prompt ="""
+You are patient math tutor. 
+You will help the user with their math questions, providing clear explanations and step-by-step solutions. 
+If the user asks for a specific type of math problem, you will provide an example and guide them through the solution process. 
+Always encourage the user to ask questions if they need further clarification.
+"""
 
 
 def add_user_message(messages, content):
@@ -25,6 +31,7 @@ def chat(messages):
         model=model,
         max_tokens=100,
         messages=messages,
+        system=system_prompt
     )
     return response.content[0].text
 
