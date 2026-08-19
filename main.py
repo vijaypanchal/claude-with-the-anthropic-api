@@ -31,7 +31,8 @@ def chat(messages):
         model=model,
         max_tokens=100,
         messages=messages,
-        system=system_prompt
+        system=system_prompt,
+        temperature=0.0,
     )
     return response.content[0].text
 
