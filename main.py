@@ -27,14 +27,22 @@ def add_assistant_message(messages, content):
     return messages 
 
 def chat(messages):
-    response = client.messages.create(
+    response_text = ""
+    with client.messages.create(
         model=model,
         max_tokens=100,
         messages=messages,
         system=system_prompt,
-        temperature=0.7,
-    )
-    return response.content[0].text
+        temperature=0.7, 
+        stream=True
+    ) as stream:
+        print("Assistant: ")
+        for event in stream:
+            if event.type == "content_block_delta":
+                text = event.delta.text
+                print(text, end="", flush=True)
+                response_text += text
+    return response_text
 
 
 def chat_main():
@@ -49,15 +57,15 @@ def chat_main():
             exit_message = "Goodbye! Have a great day!"
             print(f"Assistant: {exit_message}")
             is_exit = True
-            exit(0)
+            continue
         messages = add_user_message(messages, user_input)
         assistant_response = chat(messages)
         messages = add_assistant_message(messages, assistant_response)
-        print("---")
-        print(f"Assistant: {assistant_response}")
-        print("---")
+        #print("---")
+        #print(f"Assistant: {assistant_response}")
+        #print("---")
        
-def main():
+def stream_main():
     messages = []
     add_user_message(messages, "Hello! is LLM ?")
     with client.messages.create(
@@ -71,8 +79,7 @@ def main():
             if event.type == "content_block_delta":
                 print(event.delta.text, end="", flush=True)
             
-    
-
 
 if __name__ == "__main__":
-    main()
+    #stream_main()
+    chat_main()
