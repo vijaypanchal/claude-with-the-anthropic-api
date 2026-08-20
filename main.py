@@ -70,7 +70,7 @@ def stream_main():
     add_user_message(messages, "Hello! is LLM ?")
     with client.messages.create(
         model=model,
-        max_tokens=100,
+        max_tokens=500,
         messages=messages,
         stream=True,
         temperature=0.7,
@@ -79,7 +79,14 @@ def stream_main():
             if event.type == "content_block_delta":
                 print(event.delta.text, end="", flush=True)
             
+def structure_main():
+    messages = []
+    add_user_message(messages, "Generate a very small event bridge rule as JSON?")
+    add_assistant_message(messages, "```json");
+    chat(messages)
+    pprint(messages)
 
 if __name__ == "__main__":
     #stream_main()
-    chat_main()
+    #chat_main()
+    structure_main()
