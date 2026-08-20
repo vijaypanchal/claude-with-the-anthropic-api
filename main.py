@@ -60,15 +60,18 @@ def chat_main():
 def main():
     messages = []
     add_user_message(messages, "Hello! is LLM ?")
-    stream = client.messages.create(
+    with client.messages.create(
         model=model,
         max_tokens=100,
         messages=messages,
         stream=True,
         temperature=0.7,
-    )
-    for event in stream:
-       #pprint(event)
+    ) as stream:
+        for event in stream:
+            if event.type == "content_block_delta":
+                print(event.delta.text, end="", flush=True)
+            
+    
 
 
 if __name__ == "__main__":
