@@ -32,11 +32,12 @@ def chat(messages):
         max_tokens=100,
         messages=messages,
         system=system_prompt,
-        temperature=0.0,
+        temperature=0.7,
     )
     return response.content[0].text
 
-def main():
+
+def chat_main():
 
     messages = []
     exit_commands = ["exit", "quit", "bye"]
@@ -55,6 +56,20 @@ def main():
         print("---")
         print(f"Assistant: {assistant_response}")
         print("---")
+       
+def main():
+    messages = []
+    add_user_message(messages, "Hello! is LLM ?")
+    stream = client.messages.create(
+        model=model,
+        max_tokens=100,
+        messages=messages,
+        stream=True,
+        temperature=0.7,
+    )
+    for event in stream:
+       #pprint(event)
+
 
 if __name__ == "__main__":
     main()
